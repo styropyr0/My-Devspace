@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saurav Sajeev</title>
+<meta name="description" content="Saurav Sajeev (styropyr0). Firmware, device drivers, graphics, Android and systems work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="doc-id">styropyr0 / rev. 2026.10</p>
+    <h1>Saurav Sajeev</h1>
+    <p class="lede">
+      I write firmware, device drivers, rendering code and, once, a Linux small
+      enough to boot on a thumb-sized microcontroller. Most of what I build
+      starts from a datasheet or a blank file rather than a framework: sensor
+      drivers written register by register, a filesystem for a 4&nbsp;KB
+      EEPROM, shaders that refract whatever sits behind them. I like knowing
+      what every layer underneath my code is doing, and I usually find out by
+      writing that layer myself.
+    </p>
+    <p class="lede">
+      Most of my work is in C and C++. Outside of that, it's Kotlin and Java on
+      Android, Go and Python on servers, and whatever the problem needs in
+      between.
+    </p>
+    <ul class="links">
+      <li><a href="https://github.com/styropyr0">github.com/styropyr0</a></li>
+      <li><a href="https://www.linkedin.com/in/saurav-sajeev-04889b166">linkedin.com/in/saurav-sajeev</a></li>
+    </ul>
+  </div>
+</header>
+
+<nav class="toc wrap" aria-label="Contents">
+  <ol>
+    <li><a href="#work">Selected work</a></li>
+    <li><a href="#drivers">Drivers and embedded libraries</a></li>
+    <li><a href="#android">Android libraries</a></li>
+    <li><a href="#other">Tools and infrastructure</a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+<section id="work">
+  <h2><span class="num">01</span>Selected work</h2>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>Linux on the XIAO RP2350</h3>
+      <p class="kind">Operating system port &middot; private</p>
+      <p>
+        A Linux build cut down to fit the RISC-V side of the Seeed Studio XIAO
+        RP2350. The RP2350's Hazard3 cores have no MMU, the board has 520&nbsp;KB of
+        on-chip SRAM, and there is no external PSRAM to fall back on, so every
+        part of the image has to justify its size: kernel configuration, init,
+        userspace and the boot path out of flash.
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Target</dt><dd>RP2350, Hazard3 RV32</dd>
+      <dt>Memory</dt><dd>520 KB SRAM, no MMU</dd>
+      <dt>Storage</dt><dd>2 MB QSPI flash</dd>
+      <dt>Language</dt><dd>C, assembly</dd>
+    </dl>
+  </article>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>Xiao</h3>
+      <p class="kind">Android app &middot; closed source &middot; on Google Play</p>
+      <p>
+        A toolkit for testing connected hardware and network services from a
+        phone. It talks BLE GATT, Bluetooth Classic RFCOMM, raw TCP and UDP, HTTP,
+        WebSocket and MQTT, with typed payloads saved per device.
+      </p>
+      <p>
+        Beyond the client side it can play the other end of the conversation: a
+        BLE peripheral emulator, an embedded Ktor HTTP server with SQLite, an
+        HTTPS intercepting proxy with its own CA, an ADB client implemented over
+        TCP/TLS without the adb binary, and an NFC reader/writer. Automations are
+        built on a node canvas with conditions, loops and joins, and can be
+        triggered by schedules, MQTT messages, BLE notifications or polled APIs.
+      </p>
+      <p class="actions">
+        <a href="https://play.google.com/store/apps/details?id=com.matrix.xiao">Google Play</a>
+        <a href="https://xiao-app.up.railway.app/">Site</a>
+        <a href="https://xiao-app.up.railway.app/help/">Manual</a>
+        <a href="https://github.com/styropyr0/Xiao-Issues">Issue tracker</a>
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Platform</dt><dd>Android 9+</dd>
+      <dt>Language</dt><dd>Kotlin</dd>
+      <dt>Protocols</dt><dd>BLE, RFCOMM, TCP, UDP, HTTP, WS, MQTT, NFC</dd>
+      <dt>Version</dt><dd>3.0.0</dd>
+    </dl>
+  </article>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>Visionary</h3>
+      <p class="kind">Self-hosted observability &middot; open source</p>
+      <p>
+        Monitoring for APIs, servers and frontends: request logs, errors, uptime
+        checks, alerting and host metrics, all stored in one SQL database the
+        operator chooses (PostgreSQL, MySQL, SQLite or Cloudflare D1). Server SDKs
+        for Go, Node, Python, Ruby, Java and .NET write directly to the database;
+        browser, iOS and Android SDKs and any OTLP exporter post to the server.
+      </p>
+      <p>
+        A systemd host agent reports machine and container metrics plus security
+        events like failed SSH logins. An analyst answers questions such as
+        &ldquo;why did p95 latency spike at 14:00&rdquo; by running a bounded
+        number of read-only SQL queries against Visionary's own tables, with
+        IPs, headers and bodies masked before anything leaves the server.
+      </p>
+      <p class="actions">
+        <a href="https://github.com/styropyr0/Visionary">Source</a>
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Language</dt><dd>Go, TypeScript</dd>
+      <dt>Storage</dt><dd>Postgres, MySQL, SQLite, D1</dd>
+      <dt>Ships as</dt><dd>OCI image, amd64 / arm64</dd>
+    </dl>
+  </article>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>Prismal &amp; PrismalAGSL</h3>
+      <p class="kind">Android rendering libraries &middot; open source</p>
+      <p>
+        Real-time &ldquo;liquid glass&rdquo; for Android: backdrop blur, edge
+        refraction, chromatic aberration, Fresnel and specular terms, with
+        spring-driven press interactions. The first version renders through
+        OpenGL ES&nbsp;2.0 for the View system. The second is a rewrite for
+        Jetpack Compose on AGSL and <code>RuntimeShader</code>, which samples the
+        backdrop inside the graphics pipeline instead of capturing it separately,
+        so it is much lighter on GPU and memory. It falls back gracefully on
+        devices without AGSL.
+      </p>
+      <p>
+        Working on it led to writing an AGSL grammar for syntax highlighting
+        and proposing AGSL as a language to GitHub Linguist.
+      </p>
+      <p class="actions">
+        <a href="https://github.com/styropyr0/Prismal">Prismal (GLES)</a>
+        <a href="https://github.com/styropyr0/PrismalAGSL">PrismalAGSL</a>
+        <a href="https://github.com/styropyr0/language-agsl">language-agsl</a>
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Language</dt><dd>Kotlin, GLSL, AGSL</dd>
+      <dt>Min SDK</dt><dd>25</dd>
+      <dt>Stars</dt><dd>100+ combined</dd>
+    </dl>
+  </article>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>MjolnFS</h3>
+      <p class="kind">Filesystem for I&sup2;C EEPROM &middot; open source</p>
+      <p>
+        A small structured filesystem for AT24C-series EEPROMs, from 4&nbsp;KB to
+        512&nbsp;KB parts. Create, read, rename, delete and list files, with a
+        versioned on-disk format: mounting checks the boot sector and refuses
+        images it doesn't understand rather than guessing. Includes a serial
+        shell for poking at the volume by hand. Published in the Arduino
+        Library Manager.
+      </p>
+      <p class="actions">
+        <a href="https://github.com/styropyr0/MjolnFS">Source</a>
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Language</dt><dd>C++</dd>
+      <dt>Bus</dt><dd>I&sup2;C</dd>
+      <dt>Format</dt><dd>On-disk v2</dd>
+    </dl>
+  </article>
+
+  <article class="project">
+    <div class="project-body">
+      <h3>Imaging with an optical mouse sensor</h3>
+      <p class="kind">Hardware experiment &middot; open source</p>
+      <p>
+        An optical mouse is a tiny camera. Reading the MX8650's registers
+        directly over its serial interface exposes the raw pixel array, which
+        I rendered to a display as an image. The same frame data turned out to
+        be sensitive enough to detect small vibrations, so the sensor doubles as
+        a crude interferometer. The register access later became a standalone
+        driver library.
+      </p>
+      <p class="actions">
+        <a href="https://github.com/styropyr0/MX8650-reading-and-generating-image-from-mouse-sensor">Experiment</a>
+        <a href="https://github.com/styropyr0/MX8650">Library</a>
+      </p>
+    </div>
+    <dl class="spec">
+      <dt>Language</dt><dd>C++</dd>
+      <dt>Hardware</dt><dd>MX8650, SPI display</dd>
+    </dl>
+  </article>
+</section>
+
+<section id="drivers">
+  <h2><span class="num">02</span>Drivers and embedded libraries</h2>
+  <p class="section-note">
+    Written from datasheets, register by register. Most are published in the
+    Arduino Library Manager; the RP2350 ones use the Pico SDK.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Library</th><th>Device</th><th>Interface</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><a href="https://github.com/styropyr0/oled.h">oled.h</a></td><td>SSD1306 OLED</td><td>I&sup2;C</td><td>Scene graph of reusable drawables (Fragments, GridView), Unicode fonts, animated text, live plots (pulse, bar, scatter, histogram), four bus-speed power modes. Ships with a Python image-to-bitmap converter.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/SSD1306_RP2350">SSD1306_RP2350</a></td><td>SSD1306 OLED</td><td>I&sup2;C over PIO</td><td>Rewrite for the RP2350 with I&sup2;C driven by a PIO state machine and runtime clock-divider changes. Reaches 40+ fps in turbo mode; includes a rotating 3D cube demo.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/RP2350-RGB-Driver">RP2350-RGB-Driver</a></td><td>WS2812</td><td>PIO</td><td>WS2812 bit timing generated in PIO. Small serial protocol with a handshake, so a host app (ColorMod) or any terminal can set channels.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/MX8650">MX8650</a></td><td>Optical mouse sensor</td><td>3-wire SPI</td><td>Half-duplex SDIO register access, motion deltas and sensor configuration. Documents the ESP8266 bus-contention problem and its resistor fix.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/APDS9960">APDS9960</a></td><td>Light / colour / proximity / gesture</td><td>I&sup2;C</td><td>All four engines: ambient light, RGBC colour, proximity with offsets, and directional gesture decoding. Per-engine interrupts, gain and LED drive.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/BME688">BME688</a></td><td>Gas, humidity, pressure, temperature</td><td>I&sup2;C</td><td>Compensated readings from the on-chip calibration data, oversampling per channel, forced and parallel modes, and configurable gas-heater profiles.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/BMP180">BMP180</a></td><td>Pressure, temperature</td><td>I&sup2;C</td><td>Pressure, temperature and altitude with oversampling. Converts between &deg;C/&deg;F/K, Pa/psi/bar/inHg/atm and metres/feet.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/ADS111S">ADS111S</a></td><td>ADS1113 / 1114 / 1115 ADC</td><td>I&sup2;C</td><td>Single-ended and differential inputs, PGA ranges, 8&ndash;860 SPS, single-shot or continuous, and the threshold comparator with polarity and latching.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/MPM10">MPM10</a></td><td>Particulate matter</td><td>I&sup2;C, UART</td><td>PM1.0, PM2.5 and PM10 in &micro;g/m&sup3; plus particle counts per sample volume, over either transport. Standard or atmospheric measurement context.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/ML8511">ML8511</a></td><td>UV sensor</td><td>Analog</td><td>UV intensity in several units and the UV index, with oversampling and user calibration. Runs on AVR, ESP32, RP2040, STM32 and SAM3X8E.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/MAX7219">MAX7219</a></td><td>LED matrix / 7-segment</td><td>SPI</td><td>Decode modes, intensity, scan limit, shutdown and test modes, and pixel, column or digit writes. Also estimates the chip's power dissipation.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/SensorHub">SensorHub</a></td><td>Shared bus layer</td><td>I&sup2;C, I&sup2;S</td><td>The transport the sensor drivers build on: single and multi-byte transfers, endianness handling and presence checks, plus I&sup2;S ADC capture on the ESP32.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/Wizer">Wizer</a></td><td>ESP32 / ESP8266 Wi-Fi</td><td>&mdash;</td><td>On-device network diagnostics: RSSI-based signal score, latency and jitter, HTTP checks, rough bandwidth, captive portal detection and a signal history exportable as JSON.</td></tr>
+        <tr><td><a href="https://github.com/styropyr0/JSON_Encoder">JSON_Encoder</a></td><td>&mdash;</td><td>&mdash;</td><td>URL-encodes and decodes JSON so it can travel in query strings from boards without a JSON stack.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="android">
+  <h2><span class="num">03</span>Android libraries</h2>
+  <ul class="entries">
+    <li>
+      <a href="https://github.com/styropyr0/Prismal">Prismal</a>,
+      <a href="https://github.com/styropyr0/PrismalAGSL">PrismalAGSL</a>
+      <span>Liquid glass rendering for Views (OpenGL ES) and Jetpack Compose (AGSL). Covered in more detail <a href="#work">above</a>.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/Kairos">Kairos</a>
+      <span>Persistent exact-alarm scheduler. Survives Doze, process death and reboots without a running service.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/NetworkWatchdog">NetworkWatchdog</a>
+      <span>Lifecycle-aware connectivity monitoring that distinguishes &ldquo;connected&rdquo; from &ldquo;actually online&rdquo;.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/NowBar">NowBar</a>
+      <span>One UI 7's Now Bar rebuilt in Jetpack Compose.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/OTPView">OTPView</a>
+      <span>Fully customisable OTP input field for the View system.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/CustomizableDatePicker">CustomizableDatePicker</a>
+      <span>Date picker that is easy to integrate and can be restyled to fit the app around it.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/RecyclerList">RecyclerList</a>
+      <span>RecyclerView features with setup as simple as a ListView.</span>
+    </li>
+  </ul>
+</section>
+
+<section id="other">
+  <h2><span class="num">04</span>Tools and infrastructure</h2>
+  <ul class="entries">
+    <li>
+      <a href="https://github.com/styropyr0/StreamBoy">StreamBoy</a>
+      <span>Cloudflare Worker that streams private R2 media with HTTP Range support, stable URLs and pluggable auth (bearer, query, HMAC).</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/QDrop-Web">QDrop</a>
+      <span>QA build distribution for Android and iOS teams. Express backend, presigned uploads to R2 or S3, plus a <a href="https://github.com/styropyr0/QDrop-App">companion app</a>.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/PostgresGeospatialVector">PostgresGeospatialVector</a>
+      <span>PostGIS image with pgvector built in.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/Unity-Mask-Map-Generator">Unity Mask Map Generator</a>
+      <span>Packs metallic, AO and smoothness maps into HDRP mask maps.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/Coroutines">Coroutines</a>
+      <span>Kotlin-style structured coroutines for .NET.</span>
+    </li>
+    <li>
+      <a href="https://github.com/styropyr0/ColorMod">ColorMod</a>,
+      <a href="https://github.com/styropyr0/Bitmap-Array-Generator-From-Image">Bitmap Array Generator</a>
+      <span>Desktop utilities for driving and feeding microcontroller projects.</span>
+    </li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>
+    <a href="https://github.com/styropyr0">GitHub</a> &middot;
+    <a href="https://www.linkedin.com/in/saurav-sajeev-04889b166">LinkedIn</a>
+  </p>
+  <p>Saurav Sajeev &middot; static HTML and CSS, no tracking.</p>
+</footer>
+
+</body>
+</html>
